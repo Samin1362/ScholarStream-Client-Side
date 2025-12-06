@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
+import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 const Register = () => {
   const {
@@ -9,11 +11,14 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
     watch,
+    reset,
   } = useForm();
 
+  const navigate = useNavigate();
   const [imageUrl, setImageUrl] = useState("");
   const widgetRef = useRef();
   const password = watch("password", "");
+  const { registerUser, updateUserProfile } = useAuth();
 
   // Password validation rules
   const passwordRegex =
@@ -49,8 +54,24 @@ const Register = () => {
   }, []);
 
   const onSubmit = (data) => {
-    console.log("Form Data:", { ...data, profileImage: imageUrl });
-    // Handle form submission here
+    registerUser(data.email, data.password)
+      .then((result) => {
+        const userProfile = {
+          displayName: data.name,
+          photoURL: imageUrl || "",
+        };
+
+        return updateUserProfile(result.user, userProfile);
+      })
+      .then(() => {
+        console.log("User profile updated successfully!");
+        reset();
+        setImageUrl("");
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Registration/Update error:", error);
+      });
   };
 
   return (
