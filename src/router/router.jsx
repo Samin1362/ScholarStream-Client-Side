@@ -8,6 +8,10 @@ import ErrorPage from "../pages/ErrorPage";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AddScholarship from "../pages/Dashboard/AddScholarship";
 import MyProfile from "../pages/Dashboard/MyProfile";
+import AllScholarships from "../pages/AllScholarships";
+import ScholarshipDetails from "../pages/ScholarshipDetails";
+import PaymentSuccess from "../pages/PaymentSuccess";
+import PaymentCancelled from "../pages/PaymentCancelled";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +22,14 @@ const router = createBrowserRouter([
       {
         path: "/", 
         Component: Home
+      }, 
+      {
+        path: "/allScholarships",
+        Component: AllScholarships
+      }, 
+      {
+        path: "/scholarship/:id", 
+        Component: ScholarshipDetails
       }
     ]
   },
@@ -48,6 +60,14 @@ const router = createBrowserRouter([
       {
         path: "myProfile",
         Component: MyProfile
+      }, 
+      {
+        path: "payment-success", 
+        Component: PaymentSuccess
+      }, 
+      {
+        path: "payment-cancelled", 
+        Component: PaymentCancelled
       }
     ]
   }
