@@ -28,3 +28,18 @@
   --animation-btn: 0.2s;
   --animation-input: 0.2s;
 }
+
+/* Force light mode - always use scholarclassic theme */
+html,
+html[data-theme="scholarclassic"],
+html[data-theme="light"],
+html[data-theme="dark"] {
+  color-scheme: light;
+}
+
+/* Prevent dark mode */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: light;
+  }
+}
