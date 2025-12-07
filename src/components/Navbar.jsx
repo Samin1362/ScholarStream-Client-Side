@@ -22,7 +22,7 @@ const Navbar = () => {
     <>
       <li>
         <Link
-          to="/"
+          to="/allScholarships"
           className="text-neutral hover:text-primary transition-colors"
         >
           All Scholarships
@@ -42,6 +42,14 @@ const Navbar = () => {
           className="text-neutral hover:text-primary transition-colors"
         >
           About
+        </Link>
+      </li>
+      <li>
+        <Link
+          to="/dashboard"
+          className="text-neutral hover:text-primary transition-colors"
+        >
+          Dashboard
         </Link>
       </li>
     </>

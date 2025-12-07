@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AddScholarship = () => {
   const {
@@ -13,6 +14,7 @@ const AddScholarship = () => {
 
   const [imageUrl, setImageUrl] = useState("");
   const widgetRef = useRef();
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -37,12 +39,28 @@ const AddScholarship = () => {
   }, []);
 
   const onSubmit = (data) => {
-    const formData = {
-      ...data,
-      image: imageUrl || "",
-    };
-    console.log("Scholarship Data:", formData);
     // Handle form submission here
+
+    const scholarshipInfo = {
+      scholarshipName: data.scholarshipName,
+      universityName: data.universityName,
+      image: imageUrl,
+      country: data.country, 
+      city: data.city, 
+      degree: data.degree, 
+      scholarshipCategory: data.scholarshipCategory,
+      subjectCategory: data.subjectCategory, 
+      worldRank: data.worldRank,
+      tuitionFees: data.tuitionFees
+    }
+
+    axiosSecure.post("/scholarships", scholarshipInfo)
+    .then(res => {
+      if(res.data.insertedId){
+        console.log("Scholarship Added to the database.")
+      }
+    })
+
     reset();
     setImageUrl("");
   };
