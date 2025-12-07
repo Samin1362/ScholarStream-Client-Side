@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate } from "react-router";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Register = () => {
   const {
@@ -19,6 +20,7 @@ const Register = () => {
   const widgetRef = useRef();
   const password = watch("password", "");
   const { registerUser, updateUserProfile } = useAuth();
+  const axiosSecure = useAxiosSecure();
 
   // Password validation rules
   const passwordRegex =
@@ -56,6 +58,21 @@ const Register = () => {
   const onSubmit = (data) => {
     registerUser(data.email, data.password)
       .then((result) => {
+
+        // saving data to database
+        const userInfo = {
+          email: data.email,
+          displayName: data.name, 
+          photoURL: imageUrl
+        }
+
+        axiosSecure.post("/users", userInfo)
+        .then(res => {
+          if(res.data.insertedId){
+            console.log("User added in the database");
+          }
+        })
+
         const userProfile = {
           displayName: data.name,
           photoURL: imageUrl || "",
