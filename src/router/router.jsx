@@ -10,8 +10,8 @@ import AddScholarship from "../pages/Dashboard/AddScholarship";
 import MyProfile from "../pages/Dashboard/MyProfile";
 import AllScholarships from "../pages/AllScholarships";
 import ScholarshipDetails from "../pages/ScholarshipDetails";
-import PaymentSuccess from "../pages/PaymentSuccess";
-import PaymentCancelled from "../pages/PaymentCancelled";
+import PaymentSuccess from "../pages/Dashboard/PaymentSuccess";
+import PaymentCancelled from "../pages/Dashboard/PaymentCancelled";
 
 const router = createBrowserRouter([
   {

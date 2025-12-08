@@ -8,7 +8,7 @@ import useAuth from "../hooks/useAuth";
 import { FaArchway } from "react-icons/fa";
 
 const ScholarshipDetails = () => {
-  const {user} = useAuth();
+  const { user } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
@@ -58,22 +58,25 @@ const ScholarshipDetails = () => {
     scholarshipName,
     subjectCategory,
     tuitionFees,
+    applicationFee,
     universityName,
     worldRank,
   } = scholarship;
 
-  const handlePayment = async() => {
+  const handlePayment = async () => {
     const paymentInfo = {
-      tuitionFees: tuitionFees,
+      applicationFee: applicationFee,
       id: _id,
-      email: user.email, 
+      email: user.email,
       scholarshipName: scholarshipName,
-    }
+    };
 
-    const res = await axiosSecure.post("/create-checkout-sessions", paymentInfo);
+    const res = await axiosSecure.post(
+      "/create-checkout-sessions",
+      paymentInfo
+    );
     console.log(res.data);
     window.location.href = res.data.url;
-
   };
 
   return (
@@ -223,7 +226,7 @@ const ScholarshipDetails = () => {
                     d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
                   />
                 </svg>
-                Pay Tuition Fees
+                Pay Application Fees
               </motion.button>
             </div>
           </motion.div>
@@ -381,6 +384,34 @@ const ScholarshipDetails = () => {
                 <div>
                   <p className="text-sm text-neutral mb-1">World Ranking</p>
                   <p className="font-semibold text-lg">#{worldRank}</p>
+                </div>
+              </div>
+            )}
+
+            {/* Application Fee */}
+            {applicationFee && (
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-secondary"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-sm text-neutral mb-1">Application Fee</p>
+                  <p className="font-semibold text-lg text-secondary">
+                    {applicationFee}
+                  </p>
                 </div>
               </div>
             )}

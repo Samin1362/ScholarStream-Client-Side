@@ -51,7 +51,8 @@ const AddScholarship = () => {
       scholarshipCategory: data.scholarshipCategory,
       subjectCategory: data.subjectCategory, 
       worldRank: data.worldRank,
-      tuitionFees: data.tuitionFees
+      tuitionFees: data.tuitionFees,
+      applicationFee: data.applicationFee
     }
 
     axiosSecure.post("/scholarships", scholarshipInfo)
@@ -370,6 +371,37 @@ const AddScholarship = () => {
                   placeholder="Enter tuition fees"
                 />
               </motion.div>
+
+              {/* Appication Fee Name */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+              >
+                <label className="label">
+                  <span className="label-text font-medium text-neutral">
+                    Application Fee
+                  </span>
+                </label>
+                <input
+                  type="text"
+                  {...register("applicationFee", {
+                    required: "Application fee is required",
+                  })}
+                  className={`input input-bordered w-full focus:input-primary ${
+                    errors.applicationFee ? "input-error" : ""
+                  }`}
+                  placeholder="Enter Application fee"
+                />
+                {errors.applicationFee && (
+                  <label className="label">
+                    <span className="label-text-alt text-error">
+                      {errors.applicationFee.message}
+                    </span>
+                  </label>
+                )}
+              </motion.div>
+
             </div>
 
             <motion.div
