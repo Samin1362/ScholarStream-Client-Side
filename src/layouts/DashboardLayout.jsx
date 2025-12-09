@@ -4,6 +4,8 @@ import { FaAddressBook } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import Logo from "../components/Logo";
 import Loader from "../components/Loader";
+import { LuLetterText } from "react-icons/lu";
+import { MdReviews } from "react-icons/md";
 
 const DashboardLayout = () => {
   const navigation = useNavigation();
@@ -63,7 +65,7 @@ const DashboardLayout = () => {
                 <li>
                   <button
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="Homepage"
+                    data-tip="My Profile"
                   >
                     {/* Home icon */}
                     <ImProfile />
@@ -75,12 +77,40 @@ const DashboardLayout = () => {
                 <li>
                   <button
                     className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                    data-tip="AddScholarship"
+                    data-tip="Add Scholarship"
                   >
                     {/* Home icon */}
                     <FaAddressBook />
                     <span className="is-drawer-close:hidden">
                       Add Scholarship
+                    </span>
+                  </button>
+                </li>
+              </Link>
+              <Link to="/dashboard/myApplications">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="My Applications"
+                  >
+                    {/* application icon */}
+                    <LuLetterText />
+                    <span className="is-drawer-close:hidden">
+                      My Applications
+                    </span>
+                  </button>
+                </li>
+              </Link>
+              <Link to="/dashboard/myReviews">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="My Reviews"
+                  >
+                    {/* application icon */}
+                    <MdReviews />
+                    <span className="is-drawer-close:hidden">
+                      My Reviews
                     </span>
                   </button>
                 </li>

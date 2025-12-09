@@ -12,6 +12,8 @@ import AllScholarships from "../pages/AllScholarships";
 import ScholarshipDetails from "../pages/ScholarshipDetails";
 import PaymentSuccess from "../pages/Dashboard/PaymentSuccess";
 import PaymentCancelled from "../pages/Dashboard/PaymentCancelled";
+import MyApplications from "../pages/Dashboard/MyApplications";
+import MyReviews from "../pages/Dashboard/MyReviews";
 
 const router = createBrowserRouter([
   {
@@ -62,7 +64,15 @@ const router = createBrowserRouter([
         Component: MyProfile
       }, 
       {
-        path: "payment-success", 
+        path: "myApplications", 
+        Component: MyApplications
+      },
+      {
+        path: "myReviews", 
+        Component: MyReviews
+      },
+      {
+        path: "payment-success/:id", 
         Component: PaymentSuccess
       }, 
       {

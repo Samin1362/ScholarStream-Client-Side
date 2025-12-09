@@ -1,16 +1,30 @@
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import { Link, useSearchParams } from "react-router";
-import { useMemo } from "react";
+import { Link, useParams } from "react-router";
+import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const PaymentSuccess = () => {
-  const [searchParams] = useSearchParams();
+  const { user } = useAuth();
+  const { id } = useParams();
+  const axiosSecure = useAxiosSecure();
 
-  // Get payment data from URL params if available
-  const paymentData = useMemo(() => {
-    const sessionId = searchParams.get("session_id");
-    return sessionId ? { sessionId } : null;
-  }, [searchParams]);
+  const { isLoading, isSuccess, isError, error } = useQuery({
+    queryKey: ["payment-update", user?.email, id],
+    queryFn: async () => {
+      const userData = {
+        id: id,
+      };
+      const res = await axiosSecure.patch(
+        "/applications/payment-done",
+        userData
+      );
+      return res.data;
+    },
+    enabled: !!id && !!user?.email, // Only run if id and email exist
+  });
+
 
   return (
     <div className="min-h-screen bg-base-200 flex items-center justify-center px-4 py-12">
@@ -116,32 +130,60 @@ const PaymentSuccess = () => {
           </motion.div>
 
           {/* Payment Details Card */}
-          {paymentData && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="mt-8 bg-base-200 rounded-box p-6 border border-base-300"
-            >
-              <h3 className="text-lg font-semibold text-primary mb-4">
-                Payment Details
-              </h3>
-              <div className="space-y-2 text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mt-8 bg-base-200 rounded-box p-6 border border-base-300"
+          >
+            <h3 className="text-lg font-semibold text-primary mb-4">
+              Payment Details
+            </h3>
+            <div className="space-y-2 text-left">
+              {id && (
                 <div className="flex justify-between">
-                  <span className="text-neutral">Transaction ID:</span>
+                  <span className="text-neutral">Scholarship ID:</span>
                   <span className="font-medium text-primary">
-                    {paymentData.sessionId?.substring(0, 20)}...
+                    {id.substring(0, 20)}...
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-neutral">Status:</span>
-                  <span className="badge badge-success text-white">
-                    Completed
-                  </span>
-                </div>
+              )}
+              <div className="flex justify-between">
+                <span className="text-neutral">Status:</span>
+                <span className="badge badge-success text-white">
+                  Completed
+                </span>
               </div>
-            </motion.div>
-          )}
+              {isLoading && (
+                <div className="flex justify-between items-center mt-2">
+                  <span className="text-neutral text-sm">
+                    Updating database...
+                  </span>
+                  <span className="loading loading-spinner loading-sm text-primary"></span>
+                </div>
+              )}
+              {isSuccess && (
+                <div className="flex justify-between items-center mt-2">
+                  <span className="text-neutral text-sm">
+                    Database updated:
+                  </span>
+                  <span className="badge badge-success badge-sm text-white">
+                    ✓ Success
+                  </span>
+                </div>
+              )}
+              {isError && (
+                <div className="flex justify-between items-center mt-2">
+                  <span className="text-error text-sm">
+                    Update failed:{" "}
+                    {error?.response?.data?.message ||
+                      error?.message ||
+                      "Unknown error"}
+                  </span>
+                </div>
+              )}
+            </div>
+          </motion.div>
 
           {/* Action Buttons */}
           <motion.div

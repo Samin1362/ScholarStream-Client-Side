@@ -63,21 +63,28 @@ const ScholarshipDetails = () => {
     worldRank,
   } = scholarship;
 
-  const handlePayment = async () => {
-    const paymentInfo = {
-      applicationFee: applicationFee,
-      id: _id,
-      email: user.email,
-      scholarshipName: scholarshipName,
-    };
+  const handleApplication = async () => {
+    const { email, displayName } = user;
+    const userInfo = {
+      scholarshipId: id,
+      userName: displayName, 
+      userEmail: email, 
+      scholarshipName: scholarship.scholarshipName,
+      universityName: scholarship.universityName, 
+      city: scholarship.city, 
+      country: scholarship.country,
+      scholarshipCategory: scholarship.scholarshipCategory, 
+      degree: scholarship.degree, 
+      applicationFee: scholarship.applicationFee
+    }
 
-    const res = await axiosSecure.post(
-      "/create-checkout-sessions",
-      paymentInfo
-    );
-    console.log(res.data);
-    window.location.href = res.data.url;
-  };
+    axiosSecure.post("/applications", userInfo)
+    .then(() => {
+      navigate("/dashboard/myApplications")
+    });
+    
+
+  }
 
   return (
     <div className="min-h-screen bg-base-200 py-8 px-4">
@@ -126,7 +133,7 @@ const ScholarshipDetails = () => {
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.3 }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent"></div>
 
                 {/* Badges Overlay */}
                 <div className="absolute top-6 left-6 flex flex-col gap-2">
@@ -197,7 +204,7 @@ const ScholarshipDetails = () => {
 
               {/* Tuition Fees - Highlighted */}
               {tuitionFees && (
-                <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-box p-6 mb-6 border-2 border-primary/20">
+                <div className="bg-linear-to-r from-primary/10 to-secondary/10 rounded-box p-6 mb-6 border-2 border-primary/20">
                   <p className="text-sm text-neutral mb-2">Tuition Fees</p>
                   <p className="text-3xl font-bold text-primary">
                     {tuitionFees}
@@ -205,28 +212,14 @@ const ScholarshipDetails = () => {
                 </div>
               )}
 
-              {/* Payment Button */}
+              {/* Apply Button */}
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={handlePayment}
+                onClick={handleApplication}
                 className="btn btn-primary w-full text-white text-lg py-3"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 mr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                  />
-                </svg>
-                Pay Application Fees
+                Apply
               </motion.button>
             </div>
           </motion.div>
@@ -247,7 +240,7 @@ const ScholarshipDetails = () => {
             {/* Degree */}
             {degree && (
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 text-primary"
@@ -279,7 +272,7 @@ const ScholarshipDetails = () => {
             {/* Subject Category */}
             {subjectCategory && (
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center shrink-0">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 text-secondary"
@@ -305,7 +298,7 @@ const ScholarshipDetails = () => {
             {/* Location */}
             {(city || country) && (
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 text-accent"
@@ -391,7 +384,7 @@ const ScholarshipDetails = () => {
             {/* Application Fee */}
             {applicationFee && (
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center shrink-0">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-6 w-6 text-secondary"
