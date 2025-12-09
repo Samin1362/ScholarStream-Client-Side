@@ -14,6 +14,8 @@ import PaymentSuccess from "../pages/Dashboard/PaymentSuccess";
 import PaymentCancelled from "../pages/Dashboard/PaymentCancelled";
 import MyApplications from "../pages/Dashboard/MyApplications";
 import MyReviews from "../pages/Dashboard/MyReviews";
+import ManageAppliedApplications from "../pages/Dashboard/Moderator/ManageAppliedApplications";
+import AllReviews from "../pages/Dashboard/Moderator/AllReviews";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +72,14 @@ const router = createBrowserRouter([
       {
         path: "myReviews", 
         Component: MyReviews
+      },
+      {
+        path: "manageAppliedApplications", 
+        Component: ManageAppliedApplications
+      },
+      {
+        path: "allReviews", 
+        Component: AllReviews
       },
       {
         path: "payment-success/:id", 

@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import useAuth from "../../hooks/useAuth";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { CiEdit } from "react-icons/ci";
 import { FaTrashAlt, FaStar } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
 import Loader from "../../components/Loader";
 
 // Component for each review row that fetches its scholarship data
-const ReviewRow = ({ review, index }) => {
+const ReviewRow = ({ review, index, onDelete, onEdit }) => {
   const axiosSecure = useAxiosSecure();
 
   const { data: scholarship, isLoading: isLoadingScholarship } = useQuery({
@@ -25,6 +26,16 @@ const ReviewRow = ({ review, index }) => {
 
   const { reviewComment, ratingPoint, createdAt } = review;
   const scholarshipName = scholarship?.scholarshipName || "Loading...";
+
+  const handleDeleteReview = () => {
+    if (window.confirm("Are you sure you want to delete this review?")) {
+      onDelete(review._id);
+    }
+  };
+
+  const handleEditReview = () => {
+    onEdit(review);
+  };
 
   return (
     <motion.tr
@@ -92,6 +103,7 @@ const ReviewRow = ({ review, index }) => {
         <div className="flex items-center justify-center gap-2 flex-wrap">
           <motion.button
             whileHover={{ scale: 1.1 }}
+            onClick={handleEditReview}
             whileTap={{ scale: 0.9 }}
             className="btn btn-sm btn-circle btn-ghost text-secondary hover:bg-secondary hover:text-secondary-content"
             title="Edit Review"
@@ -100,6 +112,7 @@ const ReviewRow = ({ review, index }) => {
           </motion.button>
           <motion.button
             whileHover={{ scale: 1.1 }}
+            onClick={handleDeleteReview}
             whileTap={{ scale: 0.9 }}
             className="btn btn-sm btn-circle btn-ghost text-error hover:bg-error hover:text-error-content"
             title="Delete Review"
@@ -115,6 +128,7 @@ const ReviewRow = ({ review, index }) => {
 const MyReviews = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
+  const queryClient = useQueryClient();
 
   const {
     data: reviews = [], // Default to empty array
@@ -129,6 +143,86 @@ const MyReviews = () => {
     },
     enabled: !!user?.email,
   });
+
+  // Mutation for deleting review
+  const deleteReviewMutation = useMutation({
+    mutationFn: async (reviewId) => {
+      const res = await axiosSecure.delete(`/reviews/${reviewId}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      // Invalidate and refetch the reviews query after successful deletion
+      queryClient.invalidateQueries({
+        queryKey: ["reviews", user?.email],
+      });
+      console.log("Review deleted successfully");
+    },
+    onError: (error) => {
+      console.error("Error deleting review:", error);
+    },
+  });
+
+  const handleDeleteReview = (reviewId) => {
+    deleteReviewMutation.mutate(reviewId);
+  };
+
+  // State for edit modal
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedReviewForEdit, setSelectedReviewForEdit] = useState(null);
+  const [editRatingPoint, setEditRatingPoint] = useState(0);
+  const [editReviewComment, setEditReviewComment] = useState("");
+
+  // Mutation for updating review
+  const updateReviewMutation = useMutation({
+    mutationFn: async ({ reviewId, ratingPoint, reviewComment }) => {
+      const res = await axiosSecure.patch(`/reviews/${reviewId}`, {
+        ratingPoint,
+        reviewComment,
+      });
+      return res.data;
+    },
+    onSuccess: () => {
+      // Invalidate and refetch the reviews query after successful update
+      queryClient.invalidateQueries({
+        queryKey: ["reviews", user?.email],
+      });
+      handleCloseEditModal();
+      console.log("Review updated successfully");
+    },
+    onError: (error) => {
+      console.error("Error updating review:", error);
+    },
+  });
+
+  const handleEditReview = (review) => {
+    setSelectedReviewForEdit(review);
+    setEditRatingPoint(review.ratingPoint || 0);
+    setEditReviewComment(review.reviewComment || "");
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+    setSelectedReviewForEdit(null);
+    setEditRatingPoint(0);
+    setEditReviewComment("");
+  };
+
+  const handleSubmitEditReview = () => {
+    if (
+      !selectedReviewForEdit ||
+      editRatingPoint === 0 ||
+      !editReviewComment.trim()
+    ) {
+      return;
+    }
+
+    updateReviewMutation.mutate({
+      reviewId: selectedReviewForEdit._id,
+      ratingPoint: editRatingPoint,
+      reviewComment: editReviewComment,
+    });
+  };
 
   if (isLoading) {
     return (
@@ -204,6 +298,8 @@ const MyReviews = () => {
                       key={review._id || index}
                       review={review}
                       index={index}
+                      onDelete={handleDeleteReview}
+                      onEdit={handleEditReview}
                     />
                   ))
                 ) : (
@@ -239,6 +335,130 @@ const MyReviews = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Edit Review Modal */}
+      {isEditModalOpen && (
+        <div className="modal modal-open">
+          <div className="modal-box max-w-2xl w-full bg-base-100 shadow-2xl border border-base-300">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-base-300">
+              <motion.h3
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="text-3xl font-bold text-primary"
+              >
+                Edit Review
+              </motion.h3>
+              <motion.button
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleCloseEditModal}
+                className="btn btn-sm btn-circle btn-ghost text-error hover:bg-error hover:text-error-content"
+              >
+                <IoMdClose className="text-xl" />
+              </motion.button>
+            </div>
+
+            {/* Modal Content */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-6"
+            >
+              {/* University Name */}
+              {selectedReviewForEdit && (
+                <div className="bg-linear-to-r from-primary/10 to-secondary/10 rounded-box p-4 border border-primary/20">
+                  <p className="text-sm text-neutral/70 mb-1">University</p>
+                  <p className="text-lg font-semibold text-primary">
+                    {selectedReviewForEdit?.universityName || "N/A"}
+                  </p>
+                </div>
+              )}
+
+              {/* Rating Section */}
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-neutral">
+                  Rating <span className="text-error">*</span>
+                </label>
+                <div className="flex items-center gap-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <motion.button
+                      key={star}
+                      type="button"
+                      whileHover={{ scale: 1.2 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => setEditRatingPoint(star)}
+                      className={`transition-colors ${
+                        star <= editRatingPoint
+                          ? "text-warning"
+                          : "text-base-300"
+                      }`}
+                    >
+                      <FaStar className="text-3xl cursor-pointer" />
+                    </motion.button>
+                  ))}
+                  {editRatingPoint > 0 && (
+                    <span className="ml-2 text-neutral font-semibold">
+                      ({editRatingPoint}/5)
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Review Comment Section */}
+              <div className="space-y-3">
+                <label className="text-sm font-semibold text-neutral">
+                  Review Comment <span className="text-error">*</span>
+                </label>
+                <textarea
+                  value={editReviewComment}
+                  onChange={(e) => setEditReviewComment(e.target.value)}
+                  placeholder="Write your review here..."
+                  className="textarea textarea-bordered w-full h-32 resize-none focus:outline-none focus:border-primary"
+                  rows="5"
+                />
+                <p className="text-xs text-neutral/70">
+                  {editReviewComment.length} characters
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Modal Footer */}
+            <div className="modal-action mt-6 pt-4 border-t border-base-300">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleCloseEditModal}
+                className="btn btn-ghost"
+              >
+                Cancel
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleSubmitEditReview}
+                disabled={
+                  editRatingPoint === 0 ||
+                  !editReviewComment.trim() ||
+                  updateReviewMutation.isPending
+                }
+                className="btn btn-primary"
+              >
+                {updateReviewMutation.isPending ? (
+                  <>
+                    <span className="loading loading-spinner loading-sm"></span>
+                    Updating...
+                  </>
+                ) : (
+                  "Update Review"
+                )}
+              </motion.button>
+            </div>
+          </div>
+          <div className="modal-backdrop" onClick={handleCloseEditModal}></div>
+        </div>
+      )}
     </div>
   );
 };
