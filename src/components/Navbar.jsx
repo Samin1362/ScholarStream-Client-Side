@@ -30,15 +30,7 @@ const Navbar = () => {
       </li>
       <li>
         <Link
-          to="/"
-          className="text-neutral hover:text-primary transition-colors"
-        >
-          Categories
-        </Link>
-      </li>
-      <li>
-        <Link
-          to="/"
+          to="/about"
           className="text-neutral hover:text-primary transition-colors"
         >
           About
@@ -139,7 +131,7 @@ const Navbar = () => {
               </li>
               <li>
                 <Link
-                  to="/profile"
+                  to="/dashboard/myProfile"
                   className="text-neutral hover:text-primary hover:bg-base-200"
                 >
                   Profile

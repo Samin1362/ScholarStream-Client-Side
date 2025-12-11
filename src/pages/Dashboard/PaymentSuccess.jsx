@@ -17,7 +17,7 @@ const PaymentSuccess = () => {
         id: id,
       };
       const res = await axiosSecure.patch(
-        "/applications/payment-done",
+        `/applications/payment-done/${id}`,
         userData
       );
       return res.data;
