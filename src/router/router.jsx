@@ -18,6 +18,8 @@ import ManageAppliedApplications from "../pages/Dashboard/Moderator/ManageApplie
 import AllReviews from "../pages/Dashboard/Moderator/AllReviews";
 import ManageScholarships from "../pages/Dashboard/Admin/ManageScholarships";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
+import Analytics from "../pages/Dashboard/Admin/Analytics";
+import About from "../pages/About";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/scholarship/:id", 
         Component: ScholarshipDetails
+      }, 
+      {
+        path: "/about", 
+        Component: About
       }
     ]
   },
@@ -98,6 +104,10 @@ const router = createBrowserRouter([
       {
         path: "manageUsers", 
         Component: ManageUsers
+      }, 
+      {
+        path: "analytics",
+        Component: Analytics
       }
     ]
   }

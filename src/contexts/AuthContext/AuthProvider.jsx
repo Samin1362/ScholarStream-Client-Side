@@ -11,7 +11,6 @@ import {
 import auth from "../../firebase/firebase.config";
 
 const AuthProvider = ({ children }) => {
-
   const [user, setUser] = useState(null);
 
   const registerUser = (email, password) => {
@@ -28,22 +27,23 @@ const AuthProvider = ({ children }) => {
 
   const logout = () => {
     return signOut(auth);
-  }
+  };
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-    })
+    });
 
     return () => unsubscribe();
-  },[])
+  }, []);
 
   const authInfo = {
     user,
     registerUser,
     signInUser,
     updateUserProfile,
-    logout
+    logout,
   };
 
   return (
