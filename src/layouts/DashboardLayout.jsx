@@ -1,11 +1,11 @@
 import React from "react";
 import { Link, Outlet, useNavigation } from "react-router";
-import { FaAddressBook } from "react-icons/fa";
+import { FaAddressBook, FaUsersCog } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import Logo from "../components/Logo";
 import Loader from "../components/Loader";
 import { LuLetterText } from "react-icons/lu";
-import { MdReviews } from "react-icons/md";
+import { MdManageAccounts, MdOutlineReviews, MdReviews } from "react-icons/md";
 
 const DashboardLayout = () => {
   const navigation = useNavigation();
@@ -111,6 +111,64 @@ const DashboardLayout = () => {
                     <MdReviews />
                     <span className="is-drawer-close:hidden">
                       My Reviews
+                    </span>
+                  </button>
+                </li>
+              </Link>
+              <Link to="/dashboard/manageAppliedApplications">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Manage Applied Applications"
+                  >
+                    {/* application icon */}
+                    <MdManageAccounts />
+                    <span className="is-drawer-close:hidden">
+                      Manage Applied Applications
+                    </span>
+                  </button>
+                </li>
+              </Link>
+              <Link to="/dashboard/allReviews">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="All Reviews"
+                  >
+                    {/* application icon */}
+                    <MdOutlineReviews />
+                    <span className="is-drawer-close:hidden">
+                      All Reviews
+                    </span>
+                  </button>
+                </li>
+              </Link>
+              <Link to="/dashboard/manageScholarships">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Manage Scholarships"
+                  >
+                    {/* application icon */}
+                    <MdManageAccounts />
+                    
+                    <span className="is-drawer-close:hidden">
+                      Manage Scholarships
+                    </span>
+                  </button>
+                </li>
+              </Link>
+              <Link to="/dashboard/manageUsers">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Manage Users"
+                  >
+                    {/* application icon */}
+                    <FaUsersCog />
+
+                    <span className="is-drawer-close:hidden">
+                      Manage Users
                     </span>
                   </button>
                 </li>

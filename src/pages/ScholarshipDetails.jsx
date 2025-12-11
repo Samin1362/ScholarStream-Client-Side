@@ -5,7 +5,6 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../components/Loader";
 import useAuth from "../hooks/useAuth";
-import { FaArchway } from "react-icons/fa";
 
 const ScholarshipDetails = () => {
   const { user } = useAuth();

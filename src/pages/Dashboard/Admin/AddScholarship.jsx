@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
-import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const AddScholarship = () => {
   const {
