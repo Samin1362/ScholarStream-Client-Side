@@ -6,7 +6,7 @@ import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import ErrorPage from "../pages/ErrorPage";
 import DashboardLayout from "../layouts/DashboardLayout";
-import AddScholarship from "../pages/Dashboard/AddScholarship";
+import AddScholarship from "../pages/Dashboard/Admin/AddScholarship";
 import MyProfile from "../pages/Dashboard/MyProfile";
 import AllScholarships from "../pages/AllScholarships";
 import ScholarshipDetails from "../pages/ScholarshipDetails";
@@ -16,6 +16,8 @@ import MyApplications from "../pages/Dashboard/MyApplications";
 import MyReviews from "../pages/Dashboard/MyReviews";
 import ManageAppliedApplications from "../pages/Dashboard/Moderator/ManageAppliedApplications";
 import AllReviews from "../pages/Dashboard/Moderator/AllReviews";
+import ManageScholarships from "../pages/Dashboard/Admin/ManageScholarships";
+import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 
 const router = createBrowserRouter([
   {
@@ -88,6 +90,14 @@ const router = createBrowserRouter([
       {
         path: "payment-cancelled", 
         Component: PaymentCancelled
+      }, 
+      {
+        path: "manageScholarships", 
+        Component: ManageScholarships
+      }, 
+      {
+        path: "manageUsers", 
+        Component: ManageUsers
       }
     ]
   }

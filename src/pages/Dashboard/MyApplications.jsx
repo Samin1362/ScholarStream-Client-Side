@@ -224,6 +224,9 @@ const MyApplications = () => {
                   </th>
                   <th className="text-primary font-semibold">Payment Status</th>
                   <th className="text-primary font-semibold">Enroll Status</th>
+                  <th className="text-primary font-semibold">
+                    Feedback
+                  </th>
                   <th className="text-primary font-semibold text-center">
                     Actions
                   </th>
@@ -290,11 +293,18 @@ const MyApplications = () => {
                                 ? "badge-error text-white"
                                 : enrollStatus === "pending"
                                 ? "badge-warning text-white"
+                                : enrollStatus === "processing"
+                                ? "badge-warning text-white"
+                                : enrollStatus === "rejected"
+                                ? "badge-error text-white"
                                 : "badge-neutral"
                             }`}
                           >
                             {enrollStatus.toUpperCase()}
                           </span>
+                        </td>
+                        <td className="text-neutral font-medium">
+                          {application.feedback || "N/A"}
                         </td>
                         <td>
                           <div className="flex items-center justify-center gap-2 flex-wrap">
@@ -520,6 +530,10 @@ const MyApplications = () => {
                           ? "badge-error text-white"
                           : singleApplication.enrollmentStatus === "pending"
                           ? "badge-warning text-white"
+                          : singleApplication.enrollmentStatus === "processing"
+                          ? "badge-warning text-white"
+                          : singleApplication.enrollmentStatus === "rejected"
+                          ? "badge-error text-white"
                           : "badge-neutral"
                       }`}
                     >

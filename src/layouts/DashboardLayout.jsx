@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Outlet, useNavigation } from "react-router";
-import { FaAddressBook } from "react-icons/fa";
+import { FaAddressBook, FaUsersCog } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import Logo from "../components/Logo";
 import Loader from "../components/Loader";
@@ -139,6 +139,36 @@ const DashboardLayout = () => {
                     <MdOutlineReviews />
                     <span className="is-drawer-close:hidden">
                       All Reviews
+                    </span>
+                  </button>
+                </li>
+              </Link>
+              <Link to="/dashboard/manageScholarships">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Manage Scholarships"
+                  >
+                    {/* application icon */}
+                    <MdManageAccounts />
+                    
+                    <span className="is-drawer-close:hidden">
+                      Manage Scholarships
+                    </span>
+                  </button>
+                </li>
+              </Link>
+              <Link to="/dashboard/manageUsers">
+                <li>
+                  <button
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Manage Users"
+                  >
+                    {/* application icon */}
+                    <FaUsersCog />
+
+                    <span className="is-drawer-close:hidden">
+                      Manage Users
                     </span>
                   </button>
                 </li>
