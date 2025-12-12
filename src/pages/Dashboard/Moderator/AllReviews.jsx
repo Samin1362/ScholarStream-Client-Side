@@ -4,10 +4,12 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { FaTrashAlt, FaStar } from "react-icons/fa";
 import Loader from "../../../components/Loader";
+import { useNotification } from "../../../components/Notification";
 
 const AllReviews = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
+  const { success, error } = useNotification();
 
   const {
     data: reviews = [],
@@ -32,10 +34,13 @@ const AllReviews = () => {
       queryClient.invalidateQueries({
         queryKey: ["reviews"],
       });
-      console.log("Review deleted successfully");
+      success("Review deleted successfully!");
     },
-    onError: (error) => {
-      console.error("Error deleting review:", error);
+    onError: (err) => {
+      error(
+        err?.response?.data?.message ||
+          "Failed to delete review. Please try again."
+      );
     },
   });
 

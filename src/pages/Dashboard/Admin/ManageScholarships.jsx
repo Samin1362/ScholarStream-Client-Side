@@ -5,10 +5,12 @@ import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
+import { useNotification } from "../../../components/Notification";
 
 const ManageScholarships = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
+  const { success, error } = useNotification();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedScholarship, setSelectedScholarship] = useState(null);
@@ -90,11 +92,15 @@ const ManageScholarships = () => {
         queryClient.invalidateQueries({ queryKey: ["scholarships"] });
         setIsDeleteModalOpen(false);
         setScholarshipToDelete(null);
+        success("Scholarship deleted successfully!");
       } else {
-        console.error("Failed to delete scholarship:", res.data.message);
+        error(res.data.message || "Failed to delete scholarship.");
       }
-    } catch (error) {
-      console.error("Error deleting scholarship:", error);
+    } catch (err) {
+      error(
+        err?.response?.data?.message ||
+          "Failed to delete scholarship. Please try again."
+      );
     }
   };
 
@@ -141,9 +147,13 @@ const ManageScholarships = () => {
         // Invalidate and refetch scholarships
         queryClient.invalidateQueries({ queryKey: ["scholarships"] });
         handleCloseModal();
+        success("Scholarship updated successfully!");
       }
-    } catch (error) {
-      console.error("Error updating scholarship:", error);
+    } catch (err) {
+      error(
+        err?.response?.data?.message ||
+          "Failed to update scholarship. Please try again."
+      );
     }
   };
 

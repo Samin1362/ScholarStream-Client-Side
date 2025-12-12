@@ -20,97 +20,133 @@ import ManageScholarships from "../pages/Dashboard/Admin/ManageScholarships";
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import Analytics from "../pages/Dashboard/Admin/Analytics";
 import About from "../pages/About";
+import PrivateRoute from "../contexts/PrivateRoute";
+import AdminRoute from "./AdminRoute";
+import ModeratorRoute from "./ModeratorRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
     Component: Root,
     errorElement: <ErrorPage></ErrorPage>,
-    children : [
+    children: [
       {
-        path: "/", 
-        Component: Home
-      }, 
+        path: "/",
+        Component: Home,
+      },
       {
         path: "/allScholarships",
-        Component: AllScholarships
-      }, 
+        Component: AllScholarships,
+      },
       {
-        path: "/scholarship/:id", 
-        Component: ScholarshipDetails
-      }, 
+        path: "/scholarship/:id",
+        element: (
+          <PrivateRoute>
+            <ScholarshipDetails></ScholarshipDetails>
+          </PrivateRoute>
+        ),
+      },
       {
-        path: "/about", 
-        Component: About
-      }
-    ]
+        path: "/about",
+        Component: About,
+      },
+    ],
   },
   {
-    path: "/", 
-    Component: AuthLayout, 
+    path: "/",
+    Component: AuthLayout,
     errorElement: <ErrorPage></ErrorPage>,
     children: [
       {
         path: "/login",
-        Component: Login
-      }, 
+        Component: Login,
+      },
       {
-        path: '/register', 
-        Component: Register
-      }
-    ]
-  }, 
+        path: "/register",
+        Component: Register,
+      },
+    ],
+  },
   {
     path: "/dashboard",
     errorElement: <ErrorPage></ErrorPage>,
-    element: <DashboardLayout></DashboardLayout>, 
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
     children: [
       {
-        path: "addScholarship", 
-        Component: AddScholarship
-      }, 
+        path: "addScholarship",
+        element: (
+          <AdminRoute>
+            <AddScholarship></AddScholarship>
+          </AdminRoute>
+        ),
+      },
       {
         path: "myProfile",
-        Component: MyProfile
-      }, 
-      {
-        path: "myApplications", 
-        Component: MyApplications
+        Component: MyProfile,
       },
       {
-        path: "myReviews", 
-        Component: MyReviews
+        path: "myApplications",
+        Component: MyApplications,
       },
       {
-        path: "manageAppliedApplications", 
-        Component: ManageAppliedApplications
+        path: "myReviews",
+        Component: MyReviews,
+      },
+
+      {
+        path: "payment-success/:id",
+        Component: PaymentSuccess,
       },
       {
-        path: "allReviews", 
-        Component: AllReviews
+        path: "payment-cancelled",
+        Component: PaymentCancelled,
       },
       {
-        path: "payment-success/:id", 
-        Component: PaymentSuccess
-      }, 
+        path: "manageAppliedApplications",
+        element: (
+          <ModeratorRoute>
+            <ManageAppliedApplications></ManageAppliedApplications>
+          </ModeratorRoute>
+        ),
+      },
       {
-        path: "payment-cancelled", 
-        Component: PaymentCancelled
-      }, 
+        path: "allReviews",
+        element: (
+          <ModeratorRoute>
+            <AllReviews></AllReviews>
+          </ModeratorRoute>
+        ),
+      },
       {
-        path: "manageScholarships", 
-        Component: ManageScholarships
-      }, 
+        path: "manageScholarships",
+        element: (
+          <AdminRoute>
+            <ManageScholarships></ManageScholarships>
+          </AdminRoute>
+        ),
+      },
       {
-        path: "manageUsers", 
-        Component: ManageUsers
-      }, 
+        path: "manageUsers",
+        element: (
+          <AdminRoute>
+            <ManageUsers></ManageUsers>
+          </AdminRoute>
+        ),
+      },
       {
         path: "analytics",
-        Component: Analytics
-      }
-    ]
-  }
+        element: (
+          <AdminRoute>
+            <Analytics></Analytics>
+          </AdminRoute>
+        ),
+      },
+    ],
+  },
 ]);
 
 export default router;
