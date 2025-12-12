@@ -4,10 +4,12 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { FaTrashAlt } from "react-icons/fa";
+import { useNotification } from "../../../components/Notification";
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
+  const { success, error } = useNotification();
   const [isRoleModalOpen, setIsRoleModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [userToUpdate, setUserToUpdate] = useState(null);
@@ -47,9 +49,13 @@ const ManageUsers = () => {
         queryClient.invalidateQueries({ queryKey: ["users"] });
         setIsDeleteModalOpen(false);
         setUserToDelete(null);
+        success("User deleted successfully!");
       }
-    } catch (error) {
-      console.error("Error deleting user:", error);
+    } catch (err) {
+      error(
+        err?.response?.data?.message ||
+          "Failed to delete user. Please try again."
+      );
     }
   };
 
@@ -72,9 +78,13 @@ const ManageUsers = () => {
         setIsRoleModalOpen(false);
         setUserToUpdate(null);
         setNewRole("");
+        success(`User role updated to ${newRole} successfully!`);
       }
-    } catch (error) {
-      console.error("Error updating user role:", error);
+    } catch (err) {
+      error(
+        err?.response?.data?.message ||
+          "Failed to update user role. Please try again."
+      );
     }
   };
 
@@ -108,7 +118,7 @@ const ManageUsers = () => {
             className="bg-base-100 rounded-box shadow-lg border border-base-300 overflow-hidden"
           >
             {/* Table Header */}
-            <div className="bg-gradient-to-r from-primary to-secondary p-6">
+            <div className="bg-linear-to-r from-primary to-secondary p-6">
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -197,7 +207,7 @@ const ManageUsers = () => {
                             </div>
                             <ul
                               tabIndex={0}
-                              className="dropdown-content menu bg-base-100 rounded-box z-[1] w-40 p-2 shadow-lg border border-base-300 mt-2"
+                              className="dropdown-content menu bg-base-100 rounded-box z-1 w-40 p-2 shadow-lg border border-base-300 mt-2"
                             >
                               <li>
                                 <button

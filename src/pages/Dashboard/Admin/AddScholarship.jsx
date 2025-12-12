@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { useNotification } from "../../../components/Notification";
 
 const AddScholarship = () => {
   const {
@@ -15,6 +16,7 @@ const AddScholarship = () => {
   const [imageUrl, setImageUrl] = useState("");
   const widgetRef = useRef();
   const axiosSecure = useAxiosSecure();
+  const { success, error } = useNotification();
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -55,15 +57,21 @@ const AddScholarship = () => {
       applicationFee: data.applicationFee
     }
 
-    axiosSecure.post("/scholarships", scholarshipInfo)
-    .then(res => {
-      if(res.data.insertedId){
-        console.log("Scholarship Added to the database.")
-      }
-    })
-
-    reset();
-    setImageUrl("");
+    axiosSecure
+      .post("/scholarships", scholarshipInfo)
+      .then((res) => {
+        if (res.data.insertedId) {
+          success("Scholarship added successfully!");
+          reset();
+          setImageUrl("");
+        }
+      })
+      .catch((err) => {
+        error(
+          err?.response?.data?.message ||
+            "Failed to add scholarship. Please try again."
+        );
+      });
   };
 
   return (

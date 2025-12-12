@@ -74,7 +74,7 @@ const About = () => {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-gradient-to-r from-primary to-secondary text-white py-20 px-4"
+        className="bg-linear-to-r from-primary to-secondary text-white py-20 px-4"
       >
         <div className="container mx-auto text-center">
           <motion.div
@@ -151,7 +151,7 @@ const About = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
                 whileHover={{ scale: 1.05 }}
-                className="bg-gradient-to-br from-base-200 to-base-300 rounded-box p-6 text-center shadow-lg border border-base-300"
+                className="bg-linear-to-br from-base-200 to-base-300 rounded-box p-6 text-center shadow-lg border border-base-300"
               >
                 <div className="text-primary text-3xl mb-2 flex justify-center">
                   {stat.icon}
@@ -262,7 +262,7 @@ const About = () => {
                   transition={{ delay: index * 0.2, duration: 0.6 }}
                   className="flex flex-col md:flex-row items-center gap-6 bg-base-200 rounded-box p-6 shadow-lg border border-base-300"
                 >
-                  <div className="bg-gradient-to-r from-primary to-secondary text-white rounded-full w-20 h-20 flex items-center justify-center text-2xl font-bold flex-shrink-0">
+                  <div className="bg-linear-to-r from-primary to-secondary text-white rounded-full w-20 h-20 flex items-center justify-center text-2xl font-bold shrink-0">
                     {item.step}
                   </div>
                   <div className="flex-1 text-center md:text-left">
@@ -320,10 +320,10 @@ const About = () => {
                 whileHover={{ scale: 1.05 }}
                 className={`text-white rounded-box p-8 shadow-xl ${
                   item.color === "primary"
-                    ? "bg-gradient-to-br from-primary to-primary/80"
+                    ? "bg-linear-to-br from-primary to-primary/80"
                     : item.color === "secondary"
-                    ? "bg-gradient-to-br from-secondary to-secondary/80"
-                    : "bg-gradient-to-br from-accent to-accent/80"
+                    ? "bg-linear-to-br from-secondary to-secondary/80"
+                    : "bg-linear-to-br from-accent to-accent/80"
                 }`}
               >
                 <h3 className="text-2xl font-bold mb-4">{item.role}</h3>
@@ -340,7 +340,7 @@ const About = () => {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="py-16 px-4 bg-gradient-to-r from-primary to-secondary"
+        className="py-16 px-4 bg-linear-to-r from-primary to-secondary"
       >
         <div className="container mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">

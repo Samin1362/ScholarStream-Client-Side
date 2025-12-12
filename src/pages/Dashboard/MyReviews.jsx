@@ -8,6 +8,7 @@ import { CiEdit } from "react-icons/ci";
 import { FaTrashAlt, FaStar } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import Loader from "../../components/Loader";
+import { useNotification } from "../../components/Notification";
 
 // Component for each review row that fetches its scholarship data
 const ReviewRow = ({ review, index, onDelete, onEdit }) => {
@@ -129,6 +130,7 @@ const MyReviews = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
+  const { success, error } = useNotification();
 
   const {
     data: reviews = [], // Default to empty array
@@ -155,10 +157,13 @@ const MyReviews = () => {
       queryClient.invalidateQueries({
         queryKey: ["reviews", user?.email],
       });
-      console.log("Review deleted successfully");
+      success("Review deleted successfully!");
     },
-    onError: (error) => {
-      console.error("Error deleting review:", error);
+    onError: (err) => {
+      error(
+        err?.response?.data?.message ||
+          "Failed to delete review. Please try again."
+      );
     },
   });
 
@@ -187,10 +192,13 @@ const MyReviews = () => {
         queryKey: ["reviews", user?.email],
       });
       handleCloseEditModal();
-      console.log("Review updated successfully");
+      success("Review updated successfully!");
     },
-    onError: (error) => {
-      console.error("Error updating review:", error);
+    onError: (err) => {
+      error(
+        err?.response?.data?.message ||
+          "Failed to update review. Please try again."
+      );
     },
   });
 

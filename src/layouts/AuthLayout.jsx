@@ -1,7 +1,7 @@
-import React from 'react';
-import { Outlet, useNavigation } from 'react-router';
-import Logo from '../components/Logo';
-import Loader from '../components/Loader';
+import React from "react";
+import { Link, Outlet, useNavigation } from "react-router";
+import Logo from "../components/Logo";
+import Loader from "../components/Loader";
 
 const AuthLayout = () => {
   const navigation = useNavigation();
@@ -9,7 +9,9 @@ const AuthLayout = () => {
   return (
     <div>
       {navigation.state === "loading" && <Loader />}
-      <Logo></Logo>
+      <Link to="/">
+        <Logo></Logo>
+      </Link>
       <Outlet></Outlet>
     </div>
   );

@@ -7,10 +7,12 @@ import { IoMdClose } from "react-icons/io";
 import { FaEye, FaCommentAlt } from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import Loader from "../../../components/Loader";
+import { useNotification } from "../../../components/Notification";
 
 const ManageAppliedApplications = () => {
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
+  const { success, error } = useNotification();
 
   const {
     data: applications = [],
@@ -48,10 +50,13 @@ const ManageAppliedApplications = () => {
         queryKey: ["applications"],
       });
       handleCloseFeedbackModal();
-      console.log("Application updated successfully");
+      success("Application updated successfully!");
     },
-    onError: (error) => {
-      console.error("Error updating application:", error);
+    onError: (err) => {
+      error(
+        err?.response?.data?.message ||
+          "Failed to update application. Please try again."
+      );
     },
   });
 
