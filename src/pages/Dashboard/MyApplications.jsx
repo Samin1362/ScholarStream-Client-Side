@@ -9,12 +9,14 @@ import { MdDeleteForever } from "react-icons/md";
 import { MdOutlineRateReview } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import Loader from "../../components/Loader";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useNotification } from "../../components/Notification";
 
 const MyApplications = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const queryClient = useQueryClient();
+  const { success, error: showError } = useNotification();
   const {
     data: applications = [], // Default to empty array
     isLoading,
@@ -41,10 +43,13 @@ const MyApplications = () => {
       queryClient.invalidateQueries({
         queryKey: ["myApplications", user?.email],
       });
-      console.log("Application deleted successfully");
+      success("Application deleted successfully!");
     },
     onError: (error) => {
-      console.error("Error deleting application:", error);
+      showError(
+        error?.response?.data?.message ||
+          "Failed to delete application. Please try again."
+      );
     },
   });
 
@@ -59,10 +64,13 @@ const MyApplications = () => {
       return res.data;
     },
     onSuccess: () => {
-      console.log("Review added successfully");
+      success("Review submitted successfully!");
     },
     onError: (error) => {
-      console.error("Error adding review:", error);
+      showError(
+        error?.response?.data?.message ||
+          "Failed to submit review. Please try again."
+      );
     },
   });
 
@@ -151,13 +159,30 @@ const MyApplications = () => {
       );
 
       if (res.data?.url) {
+        success("Redirecting to payment gateway...");
         // Use window.location.replace for payment redirect
         window.location.replace(res.data.url);
+      } else {
+        showError("Failed to initialize payment. Please try again.");
       }
     } catch (error) {
-      console.error("Payment error:", error);
+      showError(
+        error?.response?.data?.message ||
+          "Payment initialization failed. Please try again."
+      );
     }
   };
+
+  // Show error notification when applications fail to load
+  const errorShownRef = useRef(false);
+  useEffect(() => {
+    if (isError && error && !errorShownRef.current) {
+      showError(
+        `Failed to load applications: ${error?.message || "Unknown error"}`
+      );
+      errorShownRef.current = true;
+    }
+  }, [isError, error, showError]);
 
   if (isLoading) {
     return (
@@ -224,9 +249,7 @@ const MyApplications = () => {
                   </th>
                   <th className="text-primary font-semibold">Payment Status</th>
                   <th className="text-primary font-semibold">Enroll Status</th>
-                  <th className="text-primary font-semibold">
-                    Feedback
-                  </th>
+                  <th className="text-primary font-semibold">Feedback</th>
                   <th className="text-primary font-semibold text-center">
                     Actions
                   </th>

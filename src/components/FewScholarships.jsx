@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import useAxiosSecure from "../hooks/useAxiosSecure";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
@@ -8,7 +8,7 @@ import ScholarshipCard from "./ScholarshipCard";
 import Loader from "./Loader";
 
 const FewScholarships = () => {
-  const axiosSecure = useAxiosSecure();
+  const axiosPublic = useAxiosPublic();
   const {
     data: scholarships = [],
     isLoading,
@@ -17,7 +17,7 @@ const FewScholarships = () => {
   } = useQuery({
     queryKey: ["scholarships"],
     queryFn: async () => {
-      const res = await axiosSecure.get("/scholarships");
+      const res = await axiosPublic.get("/scholarships");
       return res.data;
     },
   });
@@ -93,8 +93,8 @@ const FewScholarships = () => {
             Featured Scholarships
           </h2>
           <p className="text-neutral text-lg md:text-xl max-w-2xl mx-auto">
-            Discover our top scholarship opportunities with the lowest application
-            fees and most recent postings
+            Discover our top scholarship opportunities with the lowest
+            application fees and most recent postings
           </p>
         </motion.div>
 
