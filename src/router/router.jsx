@@ -70,11 +70,7 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     errorElement: <ErrorPage></ErrorPage>,
-    element: (
-      <PrivateRoute>
-        <DashboardLayout></DashboardLayout>
-      </PrivateRoute>
-    ),
+    element: <DashboardLayout></DashboardLayout>,
     children: [
       {
         path: "addScholarship",
