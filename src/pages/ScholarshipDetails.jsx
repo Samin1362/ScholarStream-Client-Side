@@ -2,6 +2,7 @@
 import { motion } from "framer-motion";
 import { useParams, useNavigate } from "react-router";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../components/Loader";
 import useAuth from "../hooks/useAuth";
@@ -10,8 +11,10 @@ const ScholarshipDetails = () => {
   const { user } = useAuth();
   const { id } = useParams();
   const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
   const axiosSecure = useAxiosSecure();
 
+  // Use public axios for fetching scholarship details (no auth required)
   const {
     data: scholarship,
     isLoading,
@@ -19,7 +22,7 @@ const ScholarshipDetails = () => {
   } = useQuery({
     queryKey: ["scholarship", id],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/scholarships/${id}`);
+      const res = await axiosPublic.get(`/scholarships/${id}`);
       return res.data;
     },
   });
@@ -63,27 +66,30 @@ const ScholarshipDetails = () => {
   } = scholarship;
 
   const handleApplication = async () => {
+    // Check if user is logged in
+    if (!user) {
+      navigate("/login", { state: { from: `/scholarship/${id}` } });
+      return;
+    }
+
     const { email, displayName } = user;
     const userInfo = {
       scholarshipId: id,
-      userName: displayName, 
-      userEmail: email, 
+      userName: displayName,
+      userEmail: email,
       scholarshipName: scholarship.scholarshipName,
-      universityName: scholarship.universityName, 
-      city: scholarship.city, 
+      universityName: scholarship.universityName,
+      city: scholarship.city,
       country: scholarship.country,
-      scholarshipCategory: scholarship.scholarshipCategory, 
-      degree: scholarship.degree, 
-      applicationFee: scholarship.applicationFee
-    }
+      scholarshipCategory: scholarship.scholarshipCategory,
+      degree: scholarship.degree,
+      applicationFee: scholarship.applicationFee,
+    };
 
-    axiosSecure.post("/applications", userInfo)
-    .then(() => {
-      navigate("/dashboard/myApplications")
+    axiosSecure.post("/applications", userInfo).then(() => {
+      navigate("/dashboard/myApplications");
     });
-    
-
-  }
+  };
 
   return (
     <div className="min-h-screen bg-base-200 py-8 px-4">
@@ -218,8 +224,13 @@ const ScholarshipDetails = () => {
                 onClick={handleApplication}
                 className="btn btn-primary w-full text-white text-lg py-3"
               >
-                Apply
+                {user ? "Apply Now" : "Login to Apply"}
               </motion.button>
+              {!user && (
+                <p className="text-xs text-neutral text-center mt-2">
+                  You need to be logged in to apply for this scholarship
+                </p>
+              )}
             </div>
           </motion.div>
         </div>

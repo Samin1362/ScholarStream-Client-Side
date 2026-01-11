@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { FaStar, FaQuoteLeft } from "react-icons/fa";
-import Loader from "./Loader";
+import SkeletonTestimonial from "./SkeletonTestimonial";
 
 const Testimonials = () => {
   const axiosSecure = useAxiosSecure();
@@ -62,9 +62,26 @@ const Testimonials = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-[400px] bg-base-200 py-12 px-4 flex justify-center items-center">
-        <Loader />
-      </div>
+      <section className="py-16 px-4 bg-base-100">
+        <div className="container mx-auto">
+          {/* Header Skeleton */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center mb-12"
+          >
+            <div className="h-12 w-80 bg-base-300 rounded mx-auto mb-4 animate-pulse"></div>
+            <div className="h-6 w-[500px] max-w-full bg-base-300 rounded mx-auto animate-pulse"></div>
+          </motion.div>
+
+          {/* Skeleton Testimonials Grid - 4 columns */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(6)].map((_, index) => (
+              <SkeletonTestimonial key={index} />
+            ))}
+          </div>
+        </div>
+      </section>
     );
   }
 
@@ -103,7 +120,7 @@ const Testimonials = () => {
         </motion.div>
 
         {/* Testimonials Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {featuredReviews.map((review, index) => (
             <motion.div
               key={review._id || index}

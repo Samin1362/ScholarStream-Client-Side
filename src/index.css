@@ -1,7 +1,9 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* Light Theme */
 @plugin "daisyui/theme" {
-  name: "scholarclassic";
+  name: "scholarlight";
   default: true;
 
   --color-primary: #2563eb;
@@ -19,6 +21,19 @@
   --color-base-100: #ffffff;
   --color-base-200: #f8fafc;
   --color-base-300: #f1f5f9;
+  --color-base-content: #1e293b;
+
+  --color-info: #0ea5e9;
+  --color-info-content: #ffffff;
+
+  --color-success: #10b981;
+  --color-success-content: #ffffff;
+
+  --color-warning: #f59e0b;
+  --color-warning-content: #ffffff;
+
+  --color-error: #ef4444;
+  --color-error-content: #ffffff;
 
   --rounded-btn: 0.6rem;
   --rounded-box: 0.8rem;
@@ -29,17 +44,58 @@
   --animation-input: 0.2s;
 }
 
-/* Force light mode - always use scholarclassic theme */
-html,
-html[data-theme="scholarclassic"],
-html[data-theme="light"],
-html[data-theme="dark"] {
-  color-scheme: light;
+/* Dark Theme */
+@plugin "daisyui/theme" {
+  name: "scholardark";
+
+  --color-primary: #3b82f6;
+  --color-primary-content: #ffffff;
+
+  --color-secondary: #14b8a6;
+  --color-secondary-content: #ffffff;
+
+  --color-accent: #a78bfa;
+  --color-accent-content: #ffffff;
+
+  --color-neutral: #94a3b8;
+  --color-neutral-content: #ffffff;
+
+  --color-base-100: #0f172a;
+  --color-base-200: #1e293b;
+  --color-base-300: #334155;
+  --color-base-content: #f1f5f9;
+
+  --color-info: #38bdf8;
+  --color-info-content: #ffffff;
+
+  --color-success: #34d399;
+  --color-success-content: #ffffff;
+
+  --color-warning: #fbbf24;
+  --color-warning-content: #000000;
+
+  --color-error: #f87171;
+  --color-error-content: #ffffff;
+
+  --rounded-btn: 0.6rem;
+  --rounded-box: 0.8rem;
+  --border-btn: 1px;
+  --border-radius: 0.5rem;
+
+  --animation-btn: 0.2s;
+  --animation-input: 0.2s;
 }
 
-/* Prevent dark mode */
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: light;
-  }
+/* Smooth theme transition */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Ensure proper contrast in dark mode */
+html[data-theme="scholardark"] {
+  color-scheme: dark;
+}
+
+html[data-theme="scholarlight"] {
+  color-scheme: light;
 }

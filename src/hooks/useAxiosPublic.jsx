@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Public axios instance for endpoints that don't require authentication
 const axiosPublic = axios.create({
-  baseURL: "https://scholar-stream-server-side.vercel.app",
+  baseURL: "http://localhost:3001/",
 });
 
 const useAxiosPublic = () => {

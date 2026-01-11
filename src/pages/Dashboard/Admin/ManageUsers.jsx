@@ -134,11 +134,11 @@ const ManageUsers = () => {
             </div>
 
             {/* Table Container */}
-            <div className="overflow-x-auto">
-              <table className="table">
+    <div className="overflow-x-auto">
+      <table className="table">
                 {/* Table Head */}
                 <thead className="bg-base-200">
-                  <tr>
+          <tr>
                     <th className="text-neutral font-semibold">#</th>
                     <th className="text-neutral font-semibold">Image</th>
                     <th className="text-neutral font-semibold">Name</th>
@@ -146,11 +146,11 @@ const ManageUsers = () => {
                     <th className="text-neutral font-semibold">Role</th>
                     <th className="text-neutral font-semibold">Created At</th>
                     <th className="text-neutral font-semibold">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
+          </tr>
+        </thead>
+        <tbody>
                   {users && users.length > 0 ? (
-                    users.map((user, index) => (
+            users.map((user, index) => (
                       <tr
                         key={index}
                         className="hover:bg-base-200 transition-colors duration-200 border-b border-base-300"
@@ -159,18 +159,18 @@ const ManageUsers = () => {
                           {index + 1}
                         </td>
                         <td>
-                          <div className="flex items-center gap-3">
-                            <div className="avatar">
+                  <div className="flex items-center gap-3">
+                    <div className="avatar">
                               <div className="mask mask-squircle w-14 h-14 ring-2 ring-primary ring-offset-2 ring-offset-base-100">
-                                <img
-                                  src={user.photoURL}
+                        <img
+                          src={user.photoURL}
                                   alt={user.displayName || "User"}
                                   className="object-cover"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </td>
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </td>
                         <td>
                           <div className="font-semibold text-base-content">
                             {user.displayName || "N/A"}
@@ -271,20 +271,20 @@ const ManageUsers = () => {
                             <FaTrashAlt className="mr-1" /> Delete
                           </motion.button>
                         </td>
-                      </tr>
+              </tr>
                     ))
                   ) : (
-                    <tr>
+          <tr>
                       <td colSpan="7" className="text-center py-12">
                         <div className="text-neutral text-lg">
                           No users found
                         </div>
                       </td>
-                    </tr>
+          </tr>
                   )}
                 </tbody>
-              </table>
-            </div>
+      </table>
+    </div>
           </motion.div>
         </div>
       </div>

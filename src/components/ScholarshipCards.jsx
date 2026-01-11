@@ -4,6 +4,7 @@ import React, { useState, useMemo } from "react";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import ScholarshipCard from "./ScholarshipCard";
+import SkeletonCard from "./SkeletonCard";
 import useAuth from "../hooks/useAuth";
 
 const ScholarshipCards = () => {
@@ -15,7 +16,7 @@ const ScholarshipCards = () => {
   const [sortOrder, setSortOrder] = useState("");
   const [showMyApplications, setShowMyApplications] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const scholarshipsPerPage = 6;
+  const scholarshipsPerPage = 8; // 4 columns × 2 rows = 8 cards per page
 
   // Handle search form submission
   const handleSearchSubmit = (e) => {
@@ -114,10 +115,43 @@ const ScholarshipCards = () => {
 
   if (isLoading || isLoadingCountries) {
     return (
-      <div className="min-h-screen bg-base-200 py-12 px-4">
+      <div className="min-h-screen bg-base-200 py-8 px-4">
         <div className="container mx-auto">
-          <div className="flex justify-center items-center h-64">
-            <span className="loading loading-spinner loading-lg text-primary"></span>
+          {/* Header Skeleton */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-8 text-center"
+          >
+            <div className="h-12 w-64 bg-base-300 rounded mx-auto mb-3 animate-pulse"></div>
+            <div className="h-6 w-96 bg-base-300 rounded mx-auto animate-pulse"></div>
+          </motion.div>
+
+          {/* Filter Section Skeleton */}
+          <div className="mb-8">
+            <div className="bg-base-100 rounded-box shadow-lg p-6 border border-base-300">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="lg:col-span-2 space-y-2">
+                  <div className="h-4 w-32 bg-base-300 rounded animate-pulse"></div>
+                  <div className="h-12 w-full bg-base-300 rounded animate-pulse"></div>
+                </div>
+                <div className="space-y-2">
+                  <div className="h-4 w-24 bg-base-300 rounded animate-pulse"></div>
+                  <div className="h-12 w-full bg-base-300 rounded animate-pulse"></div>
+                </div>
+                <div className="space-y-2">
+                  <div className="h-4 w-28 bg-base-300 rounded animate-pulse"></div>
+                  <div className="h-12 w-full bg-base-300 rounded animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Skeleton Cards Grid - 4 columns */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(8)].map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
           </div>
         </div>
       </div>
@@ -356,8 +390,8 @@ const ScholarshipCards = () => {
           </motion.div>
         ) : (
           <>
-            {/* Cards Grid - 3 columns for 6 scholarships per page */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            {/* Cards Grid - 4 columns on desktop */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               {paginatedScholarships.map((scholarship, index) => (
                 <motion.div
                   key={scholarship._id || index}

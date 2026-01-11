@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
 import ScholarshipCard from "./ScholarshipCard";
-import Loader from "./Loader";
+import SkeletonCard from "./SkeletonCard";
 
 const FewScholarships = () => {
   const axiosPublic = useAxiosPublic();
@@ -50,9 +50,31 @@ const FewScholarships = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-[400px] bg-base-200 py-12 px-4 flex justify-center items-center">
-        <Loader />
-      </div>
+      <section className="py-16 px-4 bg-base-200">
+        <div className="container mx-auto">
+          {/* Header Skeleton */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="text-center mb-12"
+          >
+            <div className="h-12 w-96 bg-base-300 rounded mx-auto mb-4 animate-pulse"></div>
+            <div className="h-6 w-[500px] max-w-full bg-base-300 rounded mx-auto animate-pulse"></div>
+          </motion.div>
+
+          {/* Skeleton Cards Grid - 4 columns */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {[...Array(6)].map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
+          </div>
+
+          {/* Button Skeleton */}
+          <div className="text-center">
+            <div className="h-14 w-64 bg-base-300 rounded-lg mx-auto animate-pulse"></div>
+          </div>
+        </div>
+      </section>
     );
   }
 
@@ -98,8 +120,8 @@ const FewScholarships = () => {
           </p>
         </motion.div>
 
-        {/* Scholarships Grid - 3 columns on large screens, 2 rows for 6 scholarships */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {/* Scholarships Grid - 4 columns on large screens */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {topScholarships.map((scholarship, index) => (
             <motion.div
               key={scholarship._id || index}

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link, useNavigate, useLocation } from "react-router";
 import Logo from "./Logo";
 import useAuth from "../hooks/useAuth";
+import ThemeToggle from "./ThemeToggle";
 
 // NavLink component defined outside to avoid render-time creation
 const NavLink = ({ to, children, className = "", isActive }) => {
@@ -123,6 +124,7 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1 gap-1">{links}</ul>
       </div>
       <div className="navbar-end gap-2">
+        <ThemeToggle />
         {user ? (
           <div className="dropdown dropdown-end">
             <motion.div

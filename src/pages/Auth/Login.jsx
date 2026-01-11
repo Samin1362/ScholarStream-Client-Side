@@ -2,12 +2,13 @@
 import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
-import { useNavigate } from "react-router";
+import { useNavigate, useLocation } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Login = () => {
   const axiosSecure = useAxiosSecure();
   const { updateUserProfile } = useAuth();
+  const location = useLocation();
 
   const {
     register,
@@ -17,12 +18,15 @@ const Login = () => {
 
   const { signInUser, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
+  
+  // Get the redirect path from location state or default to home
+  const from = location.state?.from || "/";
 
   const onSubmit = (data) => {
     signInUser(data.email, data.password)
       .then(() => {
         console.log("User signed in successfully!");
-        navigate("/");
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         console.error("Sign in error:", error);
@@ -50,7 +54,7 @@ const Login = () => {
         photoURL: result.user.photoURL || "",
       };
 
-      navigate("/");
+      navigate(from, { replace: true });
 
       return updateUserProfile(result.user, userProfile);
     });
