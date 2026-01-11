@@ -40,11 +40,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/scholarship/:id",
-        element: (
-          <PrivateRoute>
-            <ScholarshipDetails></ScholarshipDetails>
-          </PrivateRoute>
-        ),
+        Component: ScholarshipDetails,
       },
       {
         path: "/about",

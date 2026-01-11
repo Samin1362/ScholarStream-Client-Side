@@ -184,11 +184,11 @@ const ManageScholarships = () => {
             </div>
 
             {/* Table Container */}
-            <div className="overflow-x-auto">
-              <table className="table">
+    <div className="overflow-x-auto">
+      <table className="table">
                 {/* Table Head */}
                 <thead className="bg-base-200">
-                  <tr>
+          <tr>
                     <th className="text-neutral font-semibold">#</th>
                     <th className="text-neutral font-semibold">Image</th>
                     <th className="text-neutral font-semibold">
@@ -213,11 +213,11 @@ const ManageScholarships = () => {
                       Application Fees
                     </th>
                     <th className="text-neutral font-semibold">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
+          </tr>
+        </thead>
+        <tbody>
                   {scholarships && scholarships.length > 0 ? (
-                    scholarships.map((scholarship, index) => (
+            scholarships.map((scholarship, index) => (
                       <tr
                         key={index}
                         className="hover:bg-base-200 transition-colors duration-200 border-b border-base-300"
@@ -225,19 +225,19 @@ const ManageScholarships = () => {
                         <td className="font-medium text-neutral">
                           {index + 1}
                         </td>
-                        <td>
-                          <div className="flex items-center gap-3">
-                            <div className="avatar">
+                <td>
+                  <div className="flex items-center gap-3">
+                    <div className="avatar">
                               <div className="mask mask-squircle w-14 h-14 ring-2 ring-primary ring-offset-2 ring-offset-base-100">
-                                <img
-                                  src={scholarship.image}
+                        <img
+                          src={scholarship.image}
                                   alt={scholarship.scholarshipName}
                                   className="object-cover"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </td>
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </td>
                         <td>
                           <div className="font-semibold text-base-content">
                             {scholarship.scholarshipName}
@@ -303,20 +303,20 @@ const ManageScholarships = () => {
                             </motion.button>
                           </div>
                         </td>
-                      </tr>
+              </tr>
                     ))
                   ) : (
-                    <tr>
+          <tr>
                       <td colSpan="12" className="text-center py-12">
                         <div className="text-neutral text-lg">
                           No scholarships found
                         </div>
                       </td>
-                    </tr>
+          </tr>
                   )}
                 </tbody>
-              </table>
-            </div>
+      </table>
+    </div>
           </motion.div>
         </div>
       </div>

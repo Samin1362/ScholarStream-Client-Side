@@ -4,6 +4,7 @@ import { FaAddressBook, FaUsersCog } from "react-icons/fa";
 import { ImProfile } from "react-icons/im";
 import Logo from "../components/Logo";
 import Loader from "../components/Loader";
+import ThemeToggle from "../components/ThemeToggle";
 import { LuLetterText } from "react-icons/lu";
 import { MdManageAccounts, MdOutlineReviews, MdReviews } from "react-icons/md";
 import { SiGoogleanalytics } from "react-icons/si";
@@ -57,10 +58,13 @@ const DashboardLayout = () => {
                 <path d="M14 10l2 2l-2 2"></path>
               </svg>
             </motion.label>
-            <div className="px-4">
+            <div className="px-4 flex items-center gap-4">
               <Link to="/">
                 <Logo></Logo>
               </Link>
+            </div>
+            <div className="ml-auto px-4">
+              <ThemeToggle />
             </div>
           </motion.nav>
           {/* Page content here */}

@@ -62,8 +62,8 @@ const AddScholarship = () => {
       .then((res) => {
         if (res.data.insertedId) {
           success("Scholarship added successfully!");
-          reset();
-          setImageUrl("");
+    reset();
+    setImageUrl("");
         }
       })
       .catch((err) => {
